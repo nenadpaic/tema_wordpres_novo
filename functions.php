@@ -13,6 +13,7 @@ require_once "scripts/hooks.php";
 
 require_once "include/slider_admin_options.php";
 require_once "include/logo_admin_options.php";
+require_once "include/cart_widget.php";
 if(function_exists('register_nav_menus')){
 register_nav_menus( array(
     'primary' => __( 'Primary Menu', 'CCtheme' ),
@@ -231,6 +232,12 @@ function wpbeginner_numeric_posts_nav() {
 
     echo '</ul></div>' . "\n";
 
+}
+function get_item_count(){
+    global $woocommerce;
+
+    echo $woocommerce->cart->cart_contents_count;
+    echo $woocommerce->cart->get_cart_total();
 }
     ?>
 
