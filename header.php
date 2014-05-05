@@ -100,17 +100,8 @@
 <div class="row" id="sub-nav">
 <div class="sub-menu">
 <?php
-  if($post->post_parent)
-  $children = wp_list_pages("title_li=&child_of=".$post->post_parent."&echo=0");
-  else
-  $children = wp_list_pages("title_li=&child_of=".$post->ID."&echo=0");
-  if ($children) { ?>
-  <ul>
-  <?php echo $children; ?>
-  </ul>
-  <?php } 
-
-  ?>
+    nav_bar($post->ID);
+?>
   </div>
 </div>
 <?php
@@ -118,7 +109,7 @@
       slider();
    }
     else{
-        breadcumb($post->ID);
+       echo breadcumb($post->ID);
     }
 ?>
 <script >

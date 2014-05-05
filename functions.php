@@ -112,9 +112,8 @@ function nav_bar($page_id){
   <?php 
   
   } 
-
-
 }
+//Funkcija za izlistavanje side meni-a
 function side_nav_menu($page_id){
     //Proveravamo su decu od glavnog roditelja, meni koji nam treba je uvek drugi
     $svi_roditelji = get_post_ancestors($page_id); 
@@ -130,22 +129,26 @@ function side_nav_menu($page_id){
         'title_li'=> get_the_title($drugi),
         'echo' => 0,
     );
+    //Dajemu mu izlistavanje
        $meni = wp_list_pages($args);
        echo "<div class='side_menu'>";
         echo $meni;
        echo '</div>';
 
   }
-  
+//Ubacujemo ID trenutne stranice i ispisujemo putanju do te stranice
 function breadcumb($page_id){
+    //get_post_ancestors izlistava sve stranice iznad u array
     $svi_roditelji = get_post_ancestors($page_id); 
+    //Redjamo ih u obrnutom redu,tj od Roditelja pa na dole
     krsort($svi_roditelji);
-    $test = '<div id="breadcumb">';
+    //Ispisivanje kroz petlju
+    $bc = '<div id="breadcumb">';
     foreach ($svi_roditelji as $r)
-        $test .=  "<a href='". get_permalink($r) ."'>". get_the_title($r) ."</a> / ";
-    
-    $test .= get_the_title($page_id) . "</div>";
-        echo $test; 
+        $bc .=  "<a href='". get_permalink($r) ."'>". get_the_title($r) ."</a> / ";
+    //I na kraju title trenutne stranice
+    $bc .= get_the_title($page_id) . "</div>";
+        return $bc; 
 }
 
 
