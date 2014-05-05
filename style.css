@@ -312,7 +312,7 @@ h1.none_color{
   padding-left: 5%;
 }
 .widget-header{
-      margin: 10px;
+   /* css za search */ 
 }
 
 #searchsubmit{
@@ -423,6 +423,7 @@ navigacija paginacije
     color: white;
     margin-left: -15%;
     margin-right: -15%;
+    margin-bottom: 20px;
 }
 #shopCart a {
     color: white;
