@@ -32,7 +32,7 @@ if ( ! empty( $title ) )
 echo $args['before_title'] . $title . $args['after_title'];
 
 // This is where you run the code and display the output
- $output = "<a href='{$url}'> <p><i class='glyphicon glyphicon-shopping-cart'></i>MY CART({$count} - {$total} )</a> | <a href='{$checkout_url}'>CHECKOUT</a> | <a href='#' id='forma-log' data-toggle='modal' data-target='#myModal'>SIGN IN OR CREATE NEW ACC</a> </p>
+ $output = "<div id='shopCart'><p><a href='{$url}'><i class='glyphicon glyphicon-shopping-cart'></i> MY CART({$count} - {$total} )</a><a style='border-right: 0.5px solid white;border-left: 0.5px solid white;'href='{$checkout_url}'>CHECKOUT</a><a href='#' id='forma-log' data-toggle='modal' data-target='#myModal'>SIGN IN <span class='small'>OR</span> CREATE NEW ACC</a></p></div>
    ";
 /*
  *
