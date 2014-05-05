@@ -63,9 +63,10 @@ echo '<div id="carousel" class="flexslider"><ul class="slides">';
 }
 
 
-
+//Za sredjivanje URL-a, pretvara razmak u - i stavlja sva slova u mala
 function url_prepare($word){
-    return strtr($word," ","-");
+    $t = strtr($word," ","-");
+    return strtolower($t);
 }
 
 register_sidebar(array(
@@ -88,8 +89,6 @@ register_sidebar(array(
     'name' => 'Footer sidebar',
     'id'   => 'dole',
     'description' => 'this is footer area',
-
-
 ));
 //Za dobijanje prve stranice u lancu, grandparrent
 function get_root_parent($page_id) {
@@ -98,21 +97,25 @@ global $wpdb;
 	if ($parent == 0) return $page_id;
 	else return get_root_parent($parent);
 }
-
+//Drugi nav bar
 function nav_bar($page_id){
- if($post->post_parent)
-     //Da uvek ispisuje decu od grandparenta, da bude fiksni meni
-  $children = wp_list_pages("title_li=&child_of=".  get_root_parent($page_id)."&echo=0");
-  else
-  $children = wp_list_pages("title_li=&child_of=".  get_root_parent($page_id)."&echo=0");
-  if ($children) { ?>
-  <ul>
-  <?php echo $children; ?>
-  </ul>
-  <?php 
-  
-  } 
-}
+    //Izvlacimo pocetne roditelje
+    $root = get_root_parent($page_id);
+    //Nakon toga decu iliti meni koji cemo i ispisati
+    $nav_meni = get_children($root);
+    //Provlacimo kroz for each petlju i ako nema postavljen Order,stavljamo mu ID kao isti. Dodeljujemo li i a tagove zbog linka
+        foreach ($nav_meni as $nav){
+            if ($nav->menu_order == 0)
+               $write[$nav->ID] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
+            else
+               $write[$nav->menu_order] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
+            }
+        //Sortiramo od manjeg ka vecem i ispisujemo tako
+        ksort ($write);
+        foreach ($write as $w)
+            $ispis .= $w;
+        echo $ispis;
+        }
 //Funkcija za izlistavanje side meni-a
 function side_nav_menu($page_id){
     //Proveravamo su decu od glavnog roditelja, meni koji nam treba je uvek drugi
@@ -134,7 +137,6 @@ function side_nav_menu($page_id){
        echo "<div class='side_menu'>";
         echo $meni;
        echo '</div>';
-
   }
 //Ubacujemo ID trenutne stranice i ispisujemo putanju do te stranice
 function breadcumb($page_id){
@@ -163,7 +165,7 @@ register_sidebar(array(
 ));
 function add_logo(){
     $cc_logo_option = get_option('cc_theme_logo_options'); ?>
-                <a href="<?php bloginfo('home'); ?>"></a> <img src="<?php echo $cc_logo_option['logourl'] ?>" alt="Logo image" /></a>
+                <a href="<?php home_url(); ?>"></a> <img src="<?php echo $cc_logo_option['logourl'] ?>" alt="Logo image" /></a>
     <?php
 
 }

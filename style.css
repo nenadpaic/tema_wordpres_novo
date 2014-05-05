@@ -195,10 +195,45 @@ div.none_color{
 
 
 }
+.sub-menu  {
+    height: 28px;
+    margin: 0;
+    overflow: hidden;
+    padding: 0 4px;
+    border-radius:2px;
+}
+.sub-menu ul li{
+    border-right: 1px solid #A3A3A3;
+    border-left: 1px solid #FFFFFF;
+    float: left;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 28px;
+    list-style: none;
+    margin: 0px;
+    overflow: hidden;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: auto;
+}
+.sub-menu ul li li {
+    float: none;
+}
+.sub-menu a {
+    color: #333333;
+    display: block;
+    height: 28px;
+    padding: 0 15px;
+    text-decoration: none;
+}
+.sub-menu a:hover {
+    background-color: #FBFBFB;
+    background-image: linear-gradient(to bottom, #9A9A9A 0%, #FBFBFB 100%);
+
+ }
 #sub-nav{
     margin: 0 15px .875em;
 }
-
 #bs-example-navbar-collapse-1 > ul > li a {
 
     font-size: 14px;
@@ -239,40 +274,6 @@ height:20px;
     background-color: #ffffff;
 }
 
-.sub-menu  {
-    border-bottom: 1px solid #C0C0C0;
-    height: 28px;
-    margin: 0;
-    overflow: hidden;
-    padding: 0 4px;
-    background-color: lightgrey;
-    border-radius:2px;
-}
-.sub-menu ul li{
-    border-right: 1px solid #A3A3A3;
-    border-left: 1px solid #FFFFFF;
-    float: left;
-    font-size: 13px;
-    font-weight: bold;
-    line-height: 28px;
-    list-style: none;
-    margin: 0px;
-    overflow: hidden;
-    text-transform: uppercase;
-    white-space: nowrap;
-}
-.sub-menu a {
-    color: #333333;
-    display: block;
-    height: 28px;
-    padding: 0 15px;
-    text-decoration: none;
-}
-.sub-menu a:hover {
-    background-color: #FBFBFB;
-    background-image: linear-gradient(to bottom, #9A9A9A 0%, #FBFBFB 100%);
-
- }
 #content-post{
     padding: 15px 20px 15px 20px;
 }
@@ -309,6 +310,10 @@ h1.none_color{
 #header-widget {
   padding-left: 5%;
 }
+.widget-header{
+      margin: 10px;
+}
+
 #searchsubmit{
     background: #5EA939;
     background-clip: padding-box;
@@ -355,6 +360,7 @@ dodatak darko i mladen
 }
 
 #breadcumb{
+    margin: 0 0 10px 20px;
 }
 
 /*

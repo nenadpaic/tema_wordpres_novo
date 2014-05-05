@@ -22,7 +22,7 @@
     <link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url');?>/css/bootstrap.css"/>
 
    
-  <link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/flexslider.css" type="text/css"/ media="screen">
+  <link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/flexslider.css" type="text/css" media="screen">
 
   <link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url'); ?>/style.css" />
  
@@ -99,18 +99,21 @@
 <div class ="content">
 <div class="row" id="sub-nav">
 <div class="sub-menu">
-<?php
-    nav_bar($post->ID);
-?>
+    <ul>
+        <?php
+            nav_bar($post->ID);
+        ?>
+    </ul>
   </div>
 </div>
 <?php
     if ($post->post_parent == 0 && !isset($_GET['s']) && !is_single()){
       slider();
-   }
+   }   
     else{
        echo breadcumb($post->ID);
     }
+
 ?>
 <script >
 
