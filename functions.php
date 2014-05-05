@@ -103,6 +103,7 @@ function nav_bar($page_id){
     $root = get_root_parent($page_id);
     //Nakon toga decu iliti meni koji cemo i ispisati
     $nav_meni = get_children($root);
+    if (!empty($nav_meni)){
     //Provlacimo kroz for each petlju i ako nema postavljen Order,stavljamo mu ID kao isti. Dodeljujemo li i a tagove zbog linka
         foreach ($nav_meni as $nav){
             if ($nav->menu_order == 0)
@@ -115,7 +116,8 @@ function nav_bar($page_id){
         foreach ($write as $w)
             $ispis .= $w;
         echo $ispis;
-        }
+    }
+}
 //Funkcija za izlistavanje side meni-a
 function side_nav_menu($page_id){
     //Proveravamo su decu od glavnog roditelja, meni koji nam treba je uvek drugi
@@ -266,10 +268,10 @@ function style($page_id){
         return "blue";
     elseif($pocetak == $sub_menus[1]->title)
         return "green";
-    elseif ($pocetak == $sub_menus[2]->title)
-        return "red";
+    elseif(is_front_page())
+        return "none_color";
     else {
-        return 'none_color';
+        return 'red';
     }
 }
 

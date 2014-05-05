@@ -113,7 +113,7 @@
     else{
        echo breadcumb($post->ID);
     }
-
+    echo $post->ID;
 ?>
 <script >
 
