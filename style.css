@@ -50,15 +50,41 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
-#gradient  {
-height: 245px;
-overflow: hidden;
-margin-top: 0px;
-width: 100%;
-background-image: url('images/gradient1.jpg');
-background-repeat: repeat-x;
+
+div.red {
+    background-image: url('images/gradientred.png');
+    height: 245px;
+    overflow: hidden;
+    margin-top: 0px;
+    width: 100%;
+    background-repeat: repeat-x;
+}
+div.blue{
+    background-image: url('images/gradientblue.png');
+    height: 245px;
+    overflow: hidden;
+    margin-top: 0px;
+    width: 100%;
+    background-repeat: repeat-x;
+}
+div.green{
+    background-image: url('images/gradientgreen.jpg');
+    height: 245px;
+    overflow: hidden;
+    margin-top: 0px;
+    width: 100%;
+    background-repeat: repeat-x;
+}
+
+div.none_color{
+    height: 245px;
+    overflow: hidden;
+    margin-top: 0px;
+    width: 100%;
+    background-repeat: repeat-x;
 
 }
+
 
 #logo {
     margin-left:16%;
@@ -88,7 +114,7 @@ background-repeat: repeat-x;
     }
  .navbar-default{
    border:none;
-    background-color: transparent;
+   background-color: transparent;
 
 }
 
@@ -171,33 +197,30 @@ background-repeat: repeat-x;
 #sub-nav{
     margin: 0 15px .875em;
 }
-#menu-meni ul li  {
-    margin-bottom:20px
-}
-#menu-meni a {
+
+#bs-example-navbar-collapse-1 > ul > li a {
 
     font-size: 14px;
     font-weight: bold;
 }
-#menu-meni li:nth-child(1){
+#bs-example-navbar-collapse-1 > ul > li:nth-child(1){
     background-color: #027AC6;
 
 }
 
-#menu-meni li:nth-child(2){
+#bs-example-navbar-collapse-1 > ul > li:nth-child(2){
     background-color: #5EA939
 }
 
-#menu-meni li:nth-child(3){
+#bs-example-navbar-collapse-1 > ul > li:nth-child(3){
     background-color: #CD371A
 }
 .navbar {
 margin-bottom:-18px;
-
 }
+
 #bs-example-navbar-collapse-1 .collapse  {
 height:20px;
-
 }
 
 @media (min-width: 768px){
@@ -214,7 +237,7 @@ height:20px;
     width: 100%;
     background-color: #ffffff;
 }
-}
+
 .sub-menu  {
     border-bottom: 1px solid #C0C0C0;
     height: 28px;
@@ -252,12 +275,22 @@ height:20px;
 #content-post{
     padding: 15px 20px 15px 20px;
 }
+h1.green{
+    color: green;
+}
+h1.blue{
+    color: blue;
+}
+h1.red{
+    color: red;
+}
+h1.none_color{
+    color: black;
+}
+
 #content-post h1{
     font-size: 2em;
-    color: #3F8DE6;
-
     font-weight: bold;
-
     background: #ECEAEF;
     background-clip: padding-box;
     -webkit-border-radius: 7px;
@@ -375,3 +408,5 @@ navigacija paginacije
 .side_bar_right{
     margin-bottom: 15px;
 }
+
+

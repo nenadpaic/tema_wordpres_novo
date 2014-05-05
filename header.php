@@ -56,7 +56,7 @@
 
 </head>
 <body>
-<div id="gradient">
+<div class="<?php echo style($post->ID)?>">
 <div class="row" id="logoPosition">
 <div id="wrapper-header">
 <div class="col-md-4" id="logo"><?php add_logo();?></div>
@@ -115,17 +115,12 @@
 </div>
 <?php
     if ($post->post_parent == 0 && !isset($_GET['s']) && !is_single()){
-
-
       slider();
-
    }
+    else{
+        breadcumb($post->ID);
+    }
 ?>
-
-
-
-
-
 <script >
 
     $("#searchsubmit").val('Go');

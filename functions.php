@@ -239,6 +239,34 @@ function get_item_count(){
     echo $woocommerce->cart->cart_contents_count;
     echo $woocommerce->cart->get_cart_total();
 }
-    ?>
+//Izlistava sve menije, za ime je potrebno uneti: Get_All_Wordpress_Menus()[0]->name
+function Get_All_Wordpress_Menus(){
+    return get_terms( 'nav_menu', array( 'hide_empty' => true ) ); 
+}
+
+//Izlistava sve podmenije jednog menija
+function Get_sub_menus($name){
+    return wp_get_nav_menu_items($name);
+}
+//Menja style u zavisnosti od trenutne stranice
+function style($page_id){
+    //Saznajemo koji je root stranice gde se nalazimo
+    $pocetak = get_the_title(get_root_parent($page_id));
+    //Izlistavamo sve menije
+    $menus = Get_All_Wordpress_Menus()[0]->name;
+    //Izlistavamo sve podmenije
+    $sub_menus = Get_sub_menus($menus);
+    //ako je naziv roota trenutne stranice isti sa imenom nekog podmenija, menjamo mu boju
+    if ($pocetak == $sub_menus[0]->title)
+        return "blue";
+    elseif($pocetak == $sub_menus[1]->title)
+        return "green";
+    elseif ($pocetak == $sub_menus[2]->title)
+        return "red";
+    else {
+        return 'none_color';
+    }
+}
+
 
 
