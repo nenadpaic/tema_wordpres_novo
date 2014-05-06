@@ -7,6 +7,13 @@
  */
 
 ?>
+
+<div id="footer">
+    <div id="newsletter" class="row">
+        <div id="wrapper-header">
+            <div id="logo" class="col-md-4">
+                <div class="col-md-4"></div>
+</div>
 </div>
 </div>
 <div class='modal fade' id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
@@ -87,6 +94,7 @@
                 </div>
             </div>
         </div>
+
     <script>
         $("#forma-log").click(function(){
             $("#register").hide();
@@ -102,4 +110,5 @@
         });
 
     </script>
+</div>
 </html>

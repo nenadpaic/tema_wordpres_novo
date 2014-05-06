@@ -110,6 +110,7 @@ div.none_color{
     width: 73%;
     margin-top:-130px !important;
 
+
     }
  .navbar-default{
    border:none;
@@ -269,7 +270,7 @@ height:20px;
     background-clip: padding-box;
     border-radius: 10px;
     box-shadow: 0 0 0.75em #999999;
-    padding: 1em 1em 1em 1em;
+
     width: 100%;
     background-color: #ffffff;
 }
@@ -444,4 +445,16 @@ navigacija paginacije
 .widgettitle {
      visibility: hidden;
      position: absolute;
+}
+#footer {
+    background: url("images/footer.png")no-repeat scroll 3em 1em rgba(0, 0, 0, 0) ;
+    background-color:#E7E6E6;
+    clear: both;
+    font-size: 11px;
+    line-height: 1.35;
+    overflow: hidden;
+    height:50px;
+    width:100%;
+    margin-left: auto;
+    margin-right: auto
 }
