@@ -107,14 +107,14 @@
   </div>
 </div>
 <?php
-    if ($post->post_parent == 0 && !isset($_GET['s']) && !is_single()){
+    if ($post->post_parent == 0 && !isset($_GET['s']) && !is_single() && !is_woocommerce()){
       slider();
    }   
     else{
        echo breadcumb($post->ID);
     }
-    echo $post->ID;
 ?>
+
 <script >
 
     $("#searchsubmit").val('Go');

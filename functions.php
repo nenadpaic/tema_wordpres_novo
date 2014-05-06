@@ -101,26 +101,35 @@ global $wpdb;
 function nav_bar($page_id){
     //Izvlacimo pocetne roditelje
     $root = get_root_parent($page_id);
-    //Nakon toga decu iliti meni koji cemo i ispisati
-    $nav_meni = get_children($root);
-    if (!empty($nav_meni)){
-    //Provlacimo kroz for each petlju i ako nema postavljen Order,stavljamo mu ID kao isti. Dodeljujemo li i a tagove zbog linka
-        foreach ($nav_meni as $nav){
-            //Ako vrednost nije postavljena iliti jednaka je 0, kao vrednost stavljamo ID
-            if ($nav->menu_order == 0)
-               $write[$nav->ID] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
-            //Ako je postavljena i ako postoji vec ta vrednost, dodajemo joj vrednost ID-a u decimali
-            elseif (isset($write[$nav->menu_order]))
-                $write[$nav->menu_order."+0.".$nav->ID] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
-            //U suprotnom, dodajemo joj samo vrednost iz Page ordera i tako i sortiramo
-            else 
-                $write[$nav->menu_order] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
+    $root_title = strtolower(get_the_title($root));
+    if (!is_woocommerce()){
+        $catTerms = get_terms('product_cat', array('hide_empty' => 0, 'orderby' => 'ASC', 'parent' => 0));
+        foreach($catTerms as $catTerm) 
+           //echo '<li><a href="' . $catTerm->name . '"><'. $catTerm->name .'</a></li>';
+           echo "<li><a href='".home_url() ."/".url_prepare($sub_menus[2]->title)."/". url_prepare($catTerm->name)."'>" . $catTerm->name . "</a></li>";
+    }
+    else{
+        //Nakon toga decu iliti meni koji cemo i ispisati
+        $nav_meni = get_children($root);
+        if (!empty($nav_meni)){
+        //Provlacimo kroz for each petlju i ako nema postavljen Order,stavljamo mu ID kao isti. Dodeljujemo li i a tagove zbog linka
+            foreach ($nav_meni as $nav){
+                //Ako vrednost nije postavljena iliti jednaka je 0, kao vrednost stavljamo ID
+                if ($nav->menu_order == 0)
+                   $write[$nav->ID] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
+                //Ako je postavljena i ako postoji vec ta vrednost, dodajemo joj vrednost ID-a u decimali
+                elseif (isset($write[$nav->menu_order]))
+                    $write[$nav->menu_order."+0.".$nav->ID] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
+                //U suprotnom, dodajemo joj samo vrednost iz Page ordera i tako i sortiramo
+                else 
+                    $write[$nav->menu_order] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
+            }
+            //Sortiramo od manjeg ka vecem i ispisujemo tako
+            ksort ($write);
+            foreach ($write as $w)
+                $ispis .= $w;
+            echo $ispis;
         }
-        //Sortiramo od manjeg ka vecem i ispisujemo tako
-        ksort ($write);
-        foreach ($write as $w)
-            $ispis .= $w;
-        echo $ispis;
     }
 }
 //Funkcija za izlistavanje side meni-a
