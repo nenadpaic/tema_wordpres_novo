@@ -106,11 +106,16 @@ function nav_bar($page_id){
     if (!empty($nav_meni)){
     //Provlacimo kroz for each petlju i ako nema postavljen Order,stavljamo mu ID kao isti. Dodeljujemo li i a tagove zbog linka
         foreach ($nav_meni as $nav){
+            //Ako vrednost nije postavljena iliti jednaka je 0, kao vrednost stavljamo ID
             if ($nav->menu_order == 0)
                $write[$nav->ID] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
-            else
-               $write[$nav->menu_order] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
-            }
+            //Ako je postavljena i ako postoji vec ta vrednost, dodajemo joj vrednost ID-a u decimali
+            elseif (isset($write[$nav->menu_order]))
+                $write[$nav->menu_order."+0.".$nav->ID] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
+            //U suprotnom, dodajemo joj samo vrednost iz Page ordera i tako i sortiramo
+            else 
+                $write[$nav->menu_order] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
+        }
         //Sortiramo od manjeg ka vecem i ispisujemo tako
         ksort ($write);
         foreach ($write as $w)
@@ -154,16 +159,12 @@ function breadcumb($page_id){
     $bc .= get_the_title($page_id) . "</div>";
         return $bc; 
 }
-
-
 register_sidebar(array(
     'name' => 'Header section',
     'id'   => 'headersection',
     'description' => 'this is header section',
     'before_widget' => '<div class="widget-header">',
     'after_widget'  => '</div>',
-
-
 ));
 function add_logo(){
     $cc_logo_option = get_option('cc_theme_logo_options'); ?>
