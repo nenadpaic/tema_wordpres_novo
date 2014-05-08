@@ -70,20 +70,11 @@ function cc_register_logo_settings()
         'label_for' => 'Logo image',
         'class'     => 'css_class'
     );
-    $logo_button = array(
-        'type'      => 'button',
-        'id'        => 'logobutton1',
-        'name'      => 'logobutton1',
-        'desc'      => '',
-        'std'       => '',
-        'label_for' => '',
-        'value'     => 'Add image',
-        'class'     => 'button-primary'
-    );
+
 
 
     add_settings_field( 'logo_url', 'Logo image', 'cc_display_logo_setting', 'cc_theme_logo_options.php', 'cc_text_logo_section', $logo_url );
-    add_settings_field( 'logo_button', '', 'cc_display_logo_setting', 'cc_theme_logo_options.php', 'cc_text_logo_section', $logo_button );
+
 
 }
 /**
@@ -108,12 +99,7 @@ function cc_display_logo_setting($args)
             echo "<input class='regular-text$class' type='text' size='80' id='$id' name='" . $option_name . "[$id]' value='$options[$id]' />";
             echo ($desc != '') ? "<br /><span class='description'>$desc</span>" : "";
             break;
-        case 'button':
-            $options[$id] = stripslashes($options[$id]);
-            $options[$id] = esc_attr( $options[$id]);
-            echo "<button class='button-primary' id='$id'>Add logo</button>";
-
-            break;
+       
 
     }
 }
