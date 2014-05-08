@@ -11,9 +11,12 @@ require_once "scripts/scriptsjs.php";
 
 require_once "scripts/hooks.php";
 
-require_once "include/slider_admin_options.php";
-require_once "include/logo_admin_options.php";
+//require_once "include/slider_admin_options.php";
+//require_once "include/logo_admin_options.php";
 require_once "include/cart_widget.php";
+//Sklanja gresku u WP-u, da tema ne podrzava woocommerce
+add_theme_support( 'woocommerce' );
+
 if(function_exists('register_nav_menus')){
 register_nav_menus( array(
     'primary' => __( 'Primary Menu', 'CCtheme' ),
@@ -102,11 +105,14 @@ function nav_bar($page_id){
     //Izvlacimo pocetne roditelje
     $root = get_root_parent($page_id);
     $root_title = strtolower(get_the_title($root));
-    if (!is_woocommerce()){
+    $menus = Get_All_Wordpress_Menus()[0]->name;
+    //Izlistavamo sve podmenije
+    $sub_menus = Get_sub_menus($menus);
+    if (is_woocommerce()){
         $catTerms = get_terms('product_cat', array('hide_empty' => 0, 'orderby' => 'ASC', 'parent' => 0));
-        foreach($catTerms as $catTerm) 
-           //echo '<li><a href="' . $catTerm->name . '"><'. $catTerm->name .'</a></li>';
-           echo "<li><a href='".home_url() ."/".url_prepare($sub_menus[2]->title)."/". url_prepare($catTerm->name)."'>" . $catTerm->name . "</a></li>";
+        foreach($catTerms as $catTerm) {
+           echo "<li><a href='".home_url() ."/".url_prepare($sub_menus[2]->title)."/". $catTerm->slug."'>" . $catTerm->name . "</a></li>";
+        }
     }
     else{
         //Nakon toga decu iliti meni koji cemo i ispisati
@@ -135,24 +141,74 @@ function nav_bar($page_id){
 //Funkcija za izlistavanje side meni-a
 function side_nav_menu($page_id){
     //Proveravamo su decu od glavnog roditelja, meni koji nam treba je uvek drugi
-    $svi_roditelji = get_post_ancestors($page_id); 
-    end($svi_roditelji);
-    $drugi = prev($svi_roditelji);
-    //Ako ne postoji drugi, dodeljujemo mu vrednost
-    if (empty($drugi))
-        $drugi = $page_id;
-    $args = array(
-        'child_of' => $drugi,
-        'depth' => 0,
-        'sort_column' => 'post_date',
-        'title_li'=> get_the_title($drugi),
-        'echo' => 0,
-    );
-    //Dajemu mu izlistavanje
-       $meni = wp_list_pages($args);
-       echo "<div class='side_menu'>";
-        echo $meni;
-       echo '</div>';
+    $menus = Get_All_Wordpress_Menus()[0]->name;
+    //Izlistavamo sve podmenije
+    $sub_menus = Get_sub_menus($menus);
+    $print = "<div class='side_menu_shop'><ul>";
+    if (is_woocommerce()){
+        echo get_permalink($page_id);
+        $catTerms = get_terms('product_cat', array('hide_empty' => 0, 'orderby' => 'ASC', 'child_of' => 0));
+       //echo "<pre>", print_r ($catTerms), "</pre>";     
+                $t = get_query_var('product_cat');    
+                foreach ($catTerms as $cat){
+                    if ($t == $cat->slug){
+                        $ids = $cat->term_id;
+                        $link = $cat->slug;
+                        $name = $cat->name;
+                    }
+              }
+              
+             // if ($cat->slug != $t)
+              //$print .= "<li><a href='" .home_url() ."/". url_prepare($sub_menus[2]->title)."/".$cat->slug. "'>Back $cat->name</a></li><br>";
+              foreach ($catTerms as $cats){
+                  if ($ids == $cats->parent)
+                     $print .= "<li><a href='$cats->slug'>$cats->name</a></li>";
+              }
+              $print .= "</ul></div>";
+            $back = "<div class='side_menu_shop'><ul><li><a href='" .home_url() ."/". url_prepare($sub_menus[2]->title)."/".$link. "'>Back $name</a></li><br>";
+              // echo $back;
+              echo $print;
+              $attribute_taxonomies = wc_get_attribute_taxonomies();
+              $taxonomy_terms = array();
+
+              if ( $attribute_taxonomies ) :
+                  foreach ($attribute_taxonomies as $tax) :
+                  if (taxonomy_exists(wc_attribute_taxonomy_name($tax->attribute_name))) :
+                      $taxonomy_terms[$tax->attribute_name] = get_terms( wc_attribute_taxonomy_name($tax->attribute_name), 'orderby=name&hide_empty=0' );
+                  endif;
+              endforeach;
+              endif;
+              echo "<pre>", print_r($taxonomy_terms), "</pre>";
+                $args     = array( 'post_type' => 'product', 'category' => $ids );
+                $products = get_posts( $args ); 
+                echo "<pre>", print_r ($products), "</pre>";
+
+
+
+    }
+    
+    
+    
+    else{
+        $svi_roditelji = get_post_ancestors($page_id); 
+        end($svi_roditelji);
+        $drugi = prev($svi_roditelji);
+        //Ako ne postoji drugi, dodeljujemo mu vrednost
+        if (empty($drugi))
+            $drugi = $page_id;
+        $args = array(
+            'child_of' => $drugi,
+            'depth' => 0,
+            'sort_column' => 'post_date',
+            'title_li'=> get_the_title($drugi),
+            'echo' => 0,
+        );
+        //Dajemu mu izlistavanje
+           $meni = wp_list_pages($args);
+           echo "<div class='side_menu'>";
+            echo $meni;
+           echo '</div>';
+    }
   }
 //Ubacujemo ID trenutne stranice i ispisujemo putanju do te stranice
 function breadcumb($page_id){
@@ -284,6 +340,7 @@ function style($page_id){
         return 'red';
     }
 }
+
 /*
  * function returns woocommerce acc profile page link
  */
@@ -504,6 +561,5 @@ function after_footer(){
 
 <?php
 }
-
 
 
