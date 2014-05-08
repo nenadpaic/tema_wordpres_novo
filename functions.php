@@ -284,6 +284,226 @@ function style($page_id){
         return 'red';
     }
 }
+/*
+ * function returns woocommerce acc profile page link
+ */
+function get_acc_url(){
+    $myaccount_page_id = get_option( 'woocommerce_myaccount_page_id' );
+    if ( $myaccount_page_id ) {
+        $myaccount_page_url = get_permalink( $myaccount_page_id );
+    }
+    return $myaccount_page_url;
+}
+/*
+ *
+ * function for check is user loged in, and check if username, email already exist if you want to register
+ */
+function before_header(){
+    if($_GET['action'] == "logincheck"){
+        if(is_user_logged_in()){
+            $poruka = array(
+                'message' => 'success'
+            );
+        }else{
+            $poruka = array(
+                'message' => 'fail'
+            );
+        }
+        echo json_encode($poruka);
+        exit();
+    }
+    if($_GET['action'] == "checkreg"){
+        $username= strip_tags($_POST['user_login']);
+        $email=strip_tags($_POST['user_email']);
+
+        try{
+            if(username_exists($username)){
+                throw new Exception("usernameExist");
+            }
+            if(email_exists($email)){
+                throw new Exception("emailExist");
+            }
+            $poruka = array('message' =>  'ok');
+            echo json_encode($poruka);
+
+        }catch(Exception $e){
+            $poruka = array('message' =>  $e->getMessage());
+            echo json_encode($poruka);
+        }
+
+        exit();
+    }
+}
+/*
+ *
+ * function gives ajax and validation for login and register
+ */
+function after_footer(){
+    ?>
+    <script>
+        $("#forma-log").click(function(){
+            var log = "<?php echo $log ?>";
+            if(log == "yes"){
+                $("#myModalLabel").html("<b>PROFILE ACTIONS </b>");
+            }
+            $("#register").hide();
+
+            $("#login").show();
+        });
+        $("#register-button").click(function(){
+            $("#login").hide();
+            $("#register").show();
+        });
+        $("#login-button").click(function(){
+            $("#login").show();
+            $("#register").hide();
+        });
+
+        function login_ajax(){
+
+            var username_forma = $("#inputUsername").val();
+            var password_forma = $("#inputPassword").val();
+
+
+            try{
+                if(!username_forma.match(/^[a-zA-Z0-9_-]*$/)){
+                    throw "Username must contain alpha numeric and _ - characters only!";
+                }
+                if(username_forma == ""){
+                    throw "Username can not be empty";
+                }
+                if(username_forma.length < 4 || username_forma > 20){
+                    throw "Username must be beetwen 4 and 20 characters long!";
+                }
+                if(!password_forma.match(/^[a-zA-Z0-9]*$/)){
+                    throw "Password must contain alpha numeric characters only!";
+                }
+                if(password_forma == ""){
+                    throw "Password can not be empty";
+                }
+                if(password_forma.length < 6 || password_forma > 20){
+                    throw "Password must be beetwen 6 and 20 characters long!";
+                }
+                $("#message").html("<div class='progress progress-striped active'> <div class='progress-bar'  role='progressbar' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width: 100%'><span class='sr-only'>100% Complete</span> </div> </div>");
+
+
+
+                $.ajax({
+                    url: "<?php echo bloginfo('home'); ?>/wp-login.php",
+                    type: "post",
+                    data:{
+                        log : username_forma,
+                        pwd : password_forma
+                    },
+                    success:function(){
+                        uspeh();
+
+                    },
+                });
+
+            }catch(err){
+                $("#message").html("<div class='alert alert-danger'>"+ err +"</div>");
+            }
+
+
+            return false;
+        }
+        function uspeh(){
+            $.ajax({
+                url: "<?php echo bloginfo('home'); ?>/?action=logincheck",
+                type: "get",
+                dataType: "json",
+                success:function(data){
+                    if(data.message == "success"){
+                        $("#message").html("<div class='alert alert-success'>Successfully loged in.</div>");
+                        setTimeout(redirect(), 3000);
+
+                    }
+                    if(data.message == 'fail'){
+                        $("#message").html("<div class='alert alert-danger'>Wrong username or password!</div>");
+                    }
+                }
+            });
+        }
+
+        function register_ajax_form(){
+            var username = $("#user_login").val();
+            var email = $("#user_email").val();
+
+            $("#messagereg").html("<div class='progress progress-striped active'> <div class='progress-bar'  role='progressbar' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width: 100%'><span class='sr-only'>100% Complete</span> </div> </div>");
+            try{
+                if(!username.match(/^[a-zA-Z0-9_-]*$/)){
+                    throw "Username can not contain special characters!";
+                }
+                if(username == "") {
+                    throw "You must enter username!";
+                }
+                if (username.length < 4 || username.length >20 ){
+                    throw "Username can not contain less than 4 and more than 20 characters ";
+                }
+                if(!email.match(/^([a-z0-9_ -.]+@[a-z]+\.[a-z]{0,3}$)/i )){
+                    throw "You must enter valid email address.";
+                }
+                if (email=="") {
+                    throw "You must enter email address";
+                }
+
+                $.ajax({
+                    url: "<?php echo bloginfo('home'); ?>/?action=checkreg",
+                    type: "post",
+                    data:{
+                        user_login : username,
+                        user_email : email
+                    },
+                    dataType: "json",
+                    success:function(data){
+                        if(data.message == "usernameExist"){
+                            $("#messagereg").html("<div class='alert alert-danger'>Username exist, try another!</div>");
+                        }
+                        if(data.message == "emailExist"){
+                            $("#messagereg").html("<div class='alert alert-danger'>Email exist, try to log in or recover data!</div>");
+                        }
+                        if(data.message == "ok"){
+                            registration_php_form();
+                            setTimeout(redirect(), 3000);
+
+                        }
+
+                    },
+                });
+            }catch (err){
+                $("#messagereg").html("<div class='alert alert-danger'>"+ err+"</div>");
+            }
+
+
+            return false;
+        }
+        function registration_php_form(){
+            var username = $("#user_login").val();
+            var email = $("#user_email").val();
+
+
+            $.ajax({
+                url: "<?php echo wp_registration_url(); ?>",
+                type: "post",
+                data: {
+                    user_login : username,
+                    user_email : email
+                },
+                success:function(){
+                    $("#messagereg").html("<div class='alert alert-success'>Success, now you will get email with your password.</div>");
+                },
+            });
+        }
+        function redirect(){
+
+            location.href = "<?php echo $_SERVER['REQUEST_URI']; ?>";
+        }
+
+    </script>
+
+<?php
+}
 
 
 
