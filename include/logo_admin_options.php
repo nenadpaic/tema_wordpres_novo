@@ -6,26 +6,7 @@
  */
 
 
-add_action('admin_enqueue_scripts', 'cc_admin_logo_scripts');
 
-function cc_admin_logo_scripts() {
-
-    wp_enqueue_media();
-    wp_register_script("jquery_admin",'http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js', null, true);
-    wp_enqueue_script('jquery_admin');
-
-}
-
-
-/*
- *
- *
- * Mechanic for back-end
- *
- *
- *
- *
- */
 
 function cc_theme_logo_menu()
 {
@@ -57,51 +38,7 @@ function cc_theme_logo_page()
         </p>
 
     </form>
-    <script>
-        jQuery(document).ready(function($){
 
-
-            var custom_uploader;
-
-            //button1 upload options
-            $('#logobutton1').click(function(e) {
-
-                e.preventDefault();
-
-                //If the uploader object has already been created, reopen the dialog
-                if (custom_uploader) {
-                    custom_uploader.open();
-                    return;
-                }
-
-                //Extend the wp.media object
-                custom_uploader = wp.media.frames.file_frame = wp.media({
-                    title: 'Choose Image',
-                    button: {
-                        text: 'Choose Image'
-                    },
-                    multiple: false
-                });
-
-                //When a file is selected, grab the URL and set it as the text field's value
-                custom_uploader.on('select', function() {
-                    attachment = custom_uploader.state().get('selection').first().toJSON();
-                    $('#logourl').val(attachment.url);
-
-                });
-
-                //Open the uploader dialog
-                custom_uploader.open();
-
-            });
-
-
-
-
-
-
-        });
-    </script>
 
     <p>Created by CodeCrew team</p>
     </div>
