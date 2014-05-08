@@ -19,7 +19,7 @@ array( 'description' => __( 'Shooping cart count and total', 'cart_widget_domain
 // Creating widget front-end
 // This is where the action happens
 public function widget( $args, $instance ) {
-    global $woocommerce;
+    global $woocommerce, $current_user;
 
     $count = $woocommerce->cart->cart_contents_count;
     $total = $woocommerce->cart->get_cart_total();
@@ -31,8 +31,11 @@ echo $args['before_widget'];
 if ( ! empty( $title ) )
 echo $args['before_title'] . $title . $args['after_title'];
 
+get_currentuserinfo();
+
+$user = (is_user_logged_in())? "<a href='#' id='forma-log' data-toggle='modal' data-target='#myModal'>HI " . $current_user->user_login . "</a>" : "<a href='#' id='forma-log' data-toggle='modal' data-target='#myModal'>SIGN IN <span class='small'>OR</span> CREATE NEW ACC</a>";
 // This is where you run the code and display the output
- $output = "<div id='shopCart'><p><a href='{$url}'><i class='glyphicon glyphicon-shopping-cart'></i> MY CART({$count} - {$total} )</a><a style='border-right: 0.5px solid white;border-left: 0.5px solid white;'href='{$checkout_url}'>CHECKOUT</a><a href='#' id='forma-log' data-toggle='modal' data-target='#myModal'>SIGN IN <span class='small'>OR</span> CREATE NEW ACC</a></p></div>
+    $output = "<div id='shopCart'><p><a href='{$url}'><i class='glyphicon glyphicon-shopping-cart'></i> MY CART({$count} - {$total} )</a><a style='border-right: 0.5px solid white;border-left: 0.5px solid white;'href='{$checkout_url}'>CHECKOUT</a>{$user}</p></div>
    ";
 /*
  *
