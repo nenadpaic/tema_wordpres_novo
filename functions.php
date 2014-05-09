@@ -11,8 +11,8 @@ require_once "scripts/scriptsjs.php";
 
 require_once "scripts/hooks.php";
 
-//require_once "include/slider_admin_options.php";
-//require_once "include/logo_admin_options.php";
+require_once "include/slider_admin_options.php";
+require_once "include/logo_admin_options.php";
 require_once "include/cart_widget.php";
 //Sklanja gresku u WP-u, da tema ne podrzava woocommerce
 add_theme_support( 'woocommerce' );
@@ -96,9 +96,9 @@ register_sidebar(array(
 //Za dobijanje prve stranice u lancu, grandparrent
 function get_root_parent($page_id) {
 global $wpdb;
-	$parent = $wpdb->get_var("SELECT post_parent FROM $wpdb->posts WHERE post_type='page' AND ID = '$page_id'");
-	if ($parent == 0) return $page_id;
-	else return get_root_parent($parent);
+    $parent = $wpdb->get_var("SELECT post_parent FROM $wpdb->posts WHERE post_type='page' AND ID = '$page_id'");
+    if ($parent == 0) return $page_id;
+    else return get_root_parent($parent);
 }
 //Drugi nav bar
 function nav_bar($page_id){
@@ -132,9 +132,19 @@ function nav_bar($page_id){
             }
             //Sortiramo od manjeg ka vecem i ispisujemo tako
             ksort ($write);
+            ?>
+            <div class="row" id="sub-nav">
+                <div class="sub-menu">
+            <ul>
+            <?php
             foreach ($write as $w)
                 $ispis .= $w;
             echo $ispis;
+            ?>
+            </ul>
+              </div>
+                </div>
+            <?php
         }
     }
 }
@@ -561,5 +571,7 @@ function after_footer(){
 
 <?php
 }
+   
+
 
 

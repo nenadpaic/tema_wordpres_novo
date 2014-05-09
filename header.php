@@ -30,7 +30,7 @@ before_header();
       $('#carousel').flexslider({
         animation: "slide",
         controlNav: false,
-        animationLoop: false,
+        animationLoop: true,
         slideshow: false,
         itemWidth: 210,
         itemMargin: 5,
@@ -40,8 +40,8 @@ before_header();
       $('#slider').flexslider({
         animation: "slide",
         controlNav: false,
-        animationLoop: false,
-        slideshow: false,
+        animationLoop: true,
+        slideshow: true,
         sync: "#carousel",
         start: function(slider){
           $('body').removeClass('loading');
@@ -93,15 +93,16 @@ before_header();
     </div>
 </nav>
 <div class ="content">
-<div class="row" id="sub-nav">
-<div class="sub-menu">
-    <ul>
+
+
+    
         <?php
+
             nav_bar($post->ID);
         ?>
-    </ul>
-  </div>
-</div>
+    
+  
+
 <?php
     if ($post->post_parent == 0 && !isset($_GET['s']) && !is_single() && !is_woocommerce()){
       slider();
