@@ -233,7 +233,7 @@ div.none_color{
 
  }
 #sub-nav{
-    margin: 0 15px .875em;
+    margin: 0 15px 0.8em;
 }
 #bs-example-navbar-collapse-1 > ul > li a {
 
@@ -270,22 +270,22 @@ height:20px;
     background-clip: padding-box;
     border-radius: 10px;
     box-shadow: 0 0 0.75em #999999;
-
+    padding-top: 1em;
     width: 100%;
     background-color: #ffffff;
 }
 
 #content-post{
-    padding: 15px 20px 15px 20px;
+    padding: 15px 20px 15px 2em;
 }
 h1.green{
     color: green;
 }
 h1.blue{
-    color: blue;
+    color: #3F8DE6;
 }
 h1.red{
-    color: red;
+    color: #CA361A;
 }
 h1.none_color{
     color: black;
@@ -312,7 +312,7 @@ h1.none_color{
   padding-left: 5%;
 }
 .widget-header{
-   /* css za search */ 
+      margin: 10px;
 }
 
 #searchsubmit{
@@ -423,7 +423,6 @@ navigacija paginacije
     color: white;
     margin-left: -15%;
     margin-right: -15%;
-    margin-bottom: 20px;
 }
 #shopCart a {
     color: white;
@@ -458,4 +457,10 @@ navigacija paginacije
     width:100%;
     margin-left: auto;
     margin-right: auto
+}
+.cf{
+    margin: 0 1em 1em;
+}
+.flex-direction-nav a{
+    width: 30px;
 }
