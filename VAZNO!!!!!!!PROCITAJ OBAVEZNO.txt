@@ -1,0 +1,5 @@
+events-cc
+tips-cc
+social-icons
+
+SU PLUGINI I TREBA IH PREBACITI U PLUGINS FOLDER DA BI RADILI KAKO TREBA!!!!!
