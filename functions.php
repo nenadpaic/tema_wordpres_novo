@@ -30,6 +30,7 @@ if(function_exists('add_theme_support')){
 if(function_exists('add_image_size')){
     add_image_size('featured', 400, 250, true);
     add_image_size('post-thumb', 200, 125, true);
+    add_image_size('event', 110, 110, true);
 }
 
 $option_name = 'cc_theme_options';
