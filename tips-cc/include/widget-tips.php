@@ -62,14 +62,19 @@ class Tips_Widget extends WP_Widget {
             );
         
         $query = new WP_Query( $args );
-    
+    ?>
+        <div class="tips">
+        <?php
         while ($query->have_posts()) : $query->the_post(); ?>
-            
-            <?php echo the_post(); ?>
+
+            <?php echo the_content(); ?>
+            <hr />
 
         <?php   
         
-        endwhile;
+        endwhile; ?>
+        </div>
+            <?php
         wp_reset_postdata();
 
     echo $after_widget;

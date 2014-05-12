@@ -26,13 +26,18 @@ class Social_Widget extends WP_Widget {
     function widget( $args, $instance ) {
         extract( $args, EXTR_SKIP );
         echo $before_widget;
-        echo $before_title;
-        echo 'Social Icons'; // Can set this with a widget option, or omit altogether
-        echo $after_title;
-        $url_icons = get_option("social_option_name");
 
-        echo $url_icons['facebook_social'];
-        echo $url_icons['twitter_social'];
+        $url_icons = get_option("social_option_name");
+        ?>
+
+        <div class="social-icons">
+            <a href="<?php echo $url_icons['facebook_social'];?>"> <img src="<?php echo plugins_url(); ?>/social-icons/images/facebookRect.jpg" alt="facebook link" /></a>
+            <a href="<?php echo $url_icons['twitter_social'];?>"><img src="<?php echo plugins_url(); ?>/social-icons/images/twitterRect.jpg" alt="facebook link" /></a>
+        </div>
+
+<?php
+
+
 
     //
     // Widget display logic goes here
