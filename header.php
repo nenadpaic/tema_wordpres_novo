@@ -77,31 +77,20 @@ before_header();
 
         </div>
      <?php
-            wp_nav_menu( array(
-                    'menu'              => 'primary',
-                    'theme_location'    => 'primary',
-                    'depth'             => 2,
-                    'container'         => 'div',
-                    'container_class'   => 'collapse navbar-collapse',
-                    'container_id'      => 'bs-example-navbar-collapse-1',
-                    'menu_class'        => 'nav navbar-nav pull-right',
-                    'fallback_cb'       => 'wp_bootstrap_navwalker::fallback',
-                    'walker'            => new wp_bootstrap_navwalker())
-            );
-
-         ?>
+        main_nav_menu()
+     ?>
     </div>
 </nav>
 <div class ="content">
-
-
-    
-        <?php
-
-            nav_bar($post->ID);
-        ?>
-    
-  
+    <div class="row" id="sub-nav">
+        <div class="second-menu">
+            <ul>
+                <?php
+                    nav_bar($post->ID);
+                ?>
+            </ul>
+        </div>
+    </div>
 
 <?php
     if ($post->post_parent == 0 && !isset($_GET['s']) && !is_single() && !is_woocommerce()){

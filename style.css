@@ -140,7 +140,6 @@ div.none_color{
 #shopCart {
     padding-top: 0px;
     font-size: 11px;
-    font-weight: ;
     color: white;
     margin-top:-10px;
     margin-left: -5%;
@@ -521,3 +520,34 @@ navigacija paginacije
     margin-top: 0.5em;
     text-align: right;
 }
+#shop-left-sidebar{
+    margin: 0;
+    padding: 0;
+}
+#shop-left-sidebar-categories{
+    background-color: #ececec;
+    font-size: 12px;
+    padding: 12px 15px 5px 15px;    
+    margin: 0;
+}
+.widget-shop-left-sidebar{
+    padding-bottom: 20px;
+}
+
+.widget-shop-left-sidebar a {
+    color: black;
+}
+
+
+
+.widget-shop-left-sidebar a:visited{
+    text-color: black;
+}
+.widgettitle {
+    background-image: none;
+    padding: 0;
+    padding-bottom: 6px;
+    margin: 0;
+    font-weight: bold;
+}
+

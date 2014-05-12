@@ -6,14 +6,16 @@
  * Time: 10:04 AM
  */
 
-require_once "wp-bootstrap-navwalker-master/wp_bootstrap_navwalker.php";
-require_once "scripts/scriptsjs.php";
+require "wp-bootstrap-navwalker-master/wp_bootstrap_navwalker.php";
+require "scripts/scriptsjs.php";
 
-require_once "scripts/hooks.php";
+require "scripts/hooks.php";
 
-require_once "include/slider_admin_options.php";
-require_once "include/logo_admin_options.php";
-require_once "include/cart_widget.php";
+require "include/slider_admin_options.php";
+require "include/logo_admin_options.php";
+require "include/cart_widget.php";
+require "include/widget_sections.php";
+require "include/nav-menus.php";
 //Sklanja gresku u WP-u, da tema ne podrzava woocommerce
 add_theme_support( 'woocommerce' );
 
@@ -73,27 +75,6 @@ function url_prepare($word){
     return strtolower($t);
 }
 
-register_sidebar(array(
-    'name' => 'Right sidebar',
-    'id'   => 'rightsidebar',
-    'description' => 'this is right sidebar',
-    'before_widget' => '<div>',
-    'after_widget'  => '</div>',
-
-));
-register_sidebar(array(
-    'name' => 'Left sidebar',
-    'id'   => 'leftsidebar',
-    'description' => 'this is left sidebar',
-    'before_widget' => '<div class="side_bar_right">',
-    'after_widget'  => '</div>',
-
-));
-register_sidebar(array(
-    'name' => 'Footer sidebar',
-    'id'   => 'dole',
-    'description' => 'this is footer area',
-));
 //Za dobijanje prve stranice u lancu, grandparrent
 function get_root_parent($page_id) {
 global $wpdb;
@@ -105,15 +86,15 @@ global $wpdb;
 function nav_bar($page_id){
     //Izvlacimo pocetne roditelje
     $root = get_root_parent($page_id);
-    $root_title = strtolower(get_the_title($root));
+    $root_title = url_prepare(get_the_title($root));
+    //Prvi meni
     $menus = Get_All_Wordpress_Menus()[0]->name;
     //Izlistavamo sve podmenije
     $sub_menus = Get_sub_menus($menus);
+    //Drugi meni, za product
+    $menu = Get_All_Wordpress_Menus()[1]->name;
     if (is_woocommerce()){
-        $catTerms = get_terms('product_cat', array('hide_empty' => 0, 'orderby' => 'ASC', 'parent' => 0));
-        foreach($catTerms as $catTerm) {
-           echo "<li><a href='".home_url() ."/".url_prepare($sub_menus[2]->title)."/". $catTerm->slug."'>" . $catTerm->name . "</a></li>";
-        }
+        shop_second_menu($menu);
     }
     else{
         //Nakon toga decu iliti meni koji cemo i ispisati
@@ -123,84 +104,29 @@ function nav_bar($page_id){
             foreach ($nav_meni as $nav){
                 //Ako vrednost nije postavljena iliti jednaka je 0, kao vrednost stavljamo ID
                 if ($nav->menu_order == 0)
-                   $write[$nav->ID] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
+                   $write[$nav->ID] = "<li><a href='" . home_url() ."/". $root_title ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
                 //Ako je postavljena i ako postoji vec ta vrednost, dodajemo joj vrednost ID-a u decimali
                 elseif (isset($write[$nav->menu_order]))
-                    $write[$nav->menu_order."+0.".$nav->ID] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
+                    $write[$nav->menu_order."+0.".$nav->ID] = "<li><a href='" . home_url() ."/". $root_title ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
                 //U suprotnom, dodajemo joj samo vrednost iz Page ordera i tako i sortiramo
                 else 
-                    $write[$nav->menu_order] = "<li><a href='" . home_url() ."/". url_prepare(get_the_title($root)) ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
+                    $write[$nav->menu_order] = "<li><a href='" . home_url() ."/". $root_title ."/". url_prepare($nav->post_title) . "'>" . $nav->post_title . "</a></li>";
             }
             //Sortiramo od manjeg ka vecem i ispisujemo tako
             ksort ($write);
             ?>
-            <div class="row" id="sub-nav">
-                <div class="sub-menu">
-            <ul>
             <?php
             foreach ($write as $w)
                 $ispis .= $w;
             echo $ispis;
             ?>
-            </ul>
-              </div>
-                </div>
             <?php
         }
     }
 }
 //Funkcija za izlistavanje side meni-a
 function side_nav_menu($page_id){
-    //Proveravamo su decu od glavnog roditelja, meni koji nam treba je uvek drugi
-    $menus = Get_All_Wordpress_Menus()[0]->name;
-    //Izlistavamo sve podmenije
-    $sub_menus = Get_sub_menus($menus);
-    $print = "<div class='side_menu_shop'><ul>";
-    if (is_woocommerce()){
-        echo get_permalink($page_id);
-        $catTerms = get_terms('product_cat', array('hide_empty' => 0, 'orderby' => 'ASC', 'child_of' => 0));
-       //echo "<pre>", print_r ($catTerms), "</pre>";     
-                $t = get_query_var('product_cat');    
-                foreach ($catTerms as $cat){
-                    if ($t == $cat->slug){
-                        $ids = $cat->term_id;
-                        $link = $cat->slug;
-                        $name = $cat->name;
-                    }
-              }
-              
-             // if ($cat->slug != $t)
-              //$print .= "<li><a href='" .home_url() ."/". url_prepare($sub_menus[2]->title)."/".$cat->slug. "'>Back $cat->name</a></li><br>";
-              foreach ($catTerms as $cats){
-                  if ($ids == $cats->parent)
-                     $print .= "<li><a href='$cats->slug'>$cats->name</a></li>";
-              }
-              $print .= "</ul></div>";
-            $back = "<div class='side_menu_shop'><ul><li><a href='" .home_url() ."/". url_prepare($sub_menus[2]->title)."/".$link. "'>Back $name</a></li><br>";
-              // echo $back;
-              echo $print;
-              $attribute_taxonomies = wc_get_attribute_taxonomies();
-              $taxonomy_terms = array();
-
-              if ( $attribute_taxonomies ) :
-                  foreach ($attribute_taxonomies as $tax) :
-                  if (taxonomy_exists(wc_attribute_taxonomy_name($tax->attribute_name))) :
-                      $taxonomy_terms[$tax->attribute_name] = get_terms( wc_attribute_taxonomy_name($tax->attribute_name), 'orderby=name&hide_empty=0' );
-                  endif;
-              endforeach;
-              endif;
-              echo "<pre>", print_r($taxonomy_terms), "</pre>";
-                $args     = array( 'post_type' => 'product', 'category' => $ids );
-                $products = get_posts( $args ); 
-                echo "<pre>", print_r ($products), "</pre>";
-
-
-
-    }
-    
-    
-    
-    else{
+    if(!is_woocommerce()){
         $svi_roditelji = get_post_ancestors($page_id); 
         end($svi_roditelji);
         $drugi = prev($svi_roditelji);
@@ -223,6 +149,7 @@ function side_nav_menu($page_id){
   }
 //Ubacujemo ID trenutne stranice i ispisujemo putanju do te stranice
 function breadcumb($page_id){
+    if (!is_woocommerce()){
     //get_post_ancestors izlistava sve stranice iznad u array
     $svi_roditelji = get_post_ancestors($page_id); 
     //Redjamo ih u obrnutom redu,tj od Roditelja pa na dole
@@ -234,14 +161,8 @@ function breadcumb($page_id){
     //I na kraju title trenutne stranice
     $bc .= get_the_title($page_id) . "</div>";
         return $bc; 
+    }
 }
-register_sidebar(array(
-    'name' => 'Header section',
-    'id'   => 'headersection',
-    'description' => 'this is header section',
-    'before_widget' => '<div class="widget-header">',
-    'after_widget'  => '</div>',
-));
 function add_logo(){
     $cc_logo_option = get_option('cc_theme_logo_options'); ?>
                 <a href="<?php home_url(); ?>"></a> <img src="<?php echo $cc_logo_option['logourl'] ?>" alt="Logo image" /></a>
