@@ -21,7 +21,6 @@ function shop_second_menu($name_of_menu){
             'container'         => 'div',
             'container_id'      => 'bs-example-navbar-collapse-2',
             'fallback_cb'       => 'wp_bootstrap_navwalker::fallback',
-            'walker'            => new wp_bootstrap_navwalker()
 
         ));
 }
