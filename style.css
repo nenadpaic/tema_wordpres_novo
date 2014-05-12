@@ -224,12 +224,12 @@ div.none_color{
     font-size: 14px;
     font-weight: bold;
 }
-.sub-menu ul li{
+.second-menu ul li{
     border-radius: 0px;
 
 
 }
-.sub-menu ul {
+.second-menu ul {
     padding:0px;
     border-bottom: 1px solid #C0C0C0;
     height: 28px;
@@ -246,14 +246,14 @@ div.none_color{
 
 
 }
-.sub-menu  {
+.second-menu  {
     height: 28px;
     margin: 0;
     overflow: hidden;
     padding: 0 4px;
     border-radius:2px;
 }
-.sub-menu ul li{
+.second-menu ul li{
     border-right: 1px solid #A3A3A3;
     border-left: 1px solid #FFFFFF;
     float: left;
@@ -267,17 +267,17 @@ div.none_color{
     white-space: nowrap;
     width: auto;
 }
-.sub-menu ul li li {
+.second-menu ul li li {
     float: none;
 }
-.sub-menu a {
+.second-menu a {
     color: #333333;
     display: block;
     height: 28px;
     padding: 0 15px;
     text-decoration: none;
 }
-.sub-menu a:hover {
+.second-menu a:hover {
     background-color: #FBFBFB;
     background-image: linear-gradient(to bottom, #9A9A9A 0%, #FBFBFB 100%);
 
@@ -426,6 +426,7 @@ navigacija paginacije
 #sidebar-page{
     padding: 15px 20px 15px 20px;
 }
+
 .widgettitle{
     background-color: #ECECEC;
     background-image: -webkit-gradient(linear,left top,left bottom,from(#E0E0E0),to(#CCCCCC));
@@ -449,7 +450,7 @@ navigacija paginacije
     margin-left: 3px;
 }
 
-.widgettitle {
+.widget-header .widgettitle {
      visibility: hidden;
      position: absolute;
 }
@@ -470,4 +471,53 @@ navigacija paginacije
 }
 .flex-direction-nav a{
     width: 30px;
+}
+
+.event{
+    font-size: 12px;
+    padding-top: 20px;
+}
+.event a{
+    color:#4EA000;
+
+
+
+}
+.eventdiv{
+    border-bottom: medium none;
+    border-right: medium none;
+    border-top: 1px solid #D3D3D3;
+    font-size: 12px;
+    padding: 5px 0;
+}
+.social-icons a img {
+    margin:0px;
+}
+.social-icons {
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+.tips hr{
+    margin: 0;
+    padding: 0;
+    border: none;
+    height: 1px;
+    background: #5294c1;
+    margin-bottom: 1em;
+}
+.tips{
+    font-size:12px;
+}
+.tips p{
+
+    margin: 0.6em 0 1.2em;
+    padding: 0;
+}
+.tips a{
+    color: #4EA000;
+    display: block;
+    font-weight: bold;
+    margin-top: 0.5em;
+    text-align: right;
 }
