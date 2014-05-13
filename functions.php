@@ -8,9 +8,7 @@
 
 require "wp-bootstrap-navwalker-master/wp_bootstrap_navwalker.php";
 require "scripts/scriptsjs.php";
-
 require "scripts/hooks.php";
-
 require "include/slider_admin_options.php";
 require "include/logo_admin_options.php";
 require "include/cart_widget.php";
@@ -18,6 +16,24 @@ require "include/widget_sections.php";
 require "include/nav-menus.php";
 //Sklanja gresku u WP-u, da tema ne podrzava woocommerce
 add_theme_support( 'woocommerce' );
+//Promena imena prve stavke u breadcumb u woocomercu iz Home u Shop
+add_filter( 'woocommerce_breadcrumb_defaults', 'jk_change_breadcrumb_home_text' );
+function jk_change_breadcrumb_home_text($defaults){
+    // Change the breadcrumb home text from 'Home' to 'Appartment'
+    $defaults['home']='Shop';
+    return $defaults;
+}
+//Breadcrumb u prodavnici, kad se klikne na shop vodi u prodavnicu,a ne na homepage
+add_filter( 'woocommerce_breadcrumb_home_url', 'woo_custom_breadrumb_home_url' );
+function woo_custom_breadrumb_home_url(){
+    return get_permalink(woocommerce_get_page_id('shop'));
+}
+//Sklanjanje komentara
+add_filter( 'woocommerce_product_tabs', 'sb_woo_remove_reviews_tab', 98);
+function sb_woo_remove_reviews_tab($tabs) {
+ unset($tabs['reviews']);
+ return $tabs;
+}
 
 if(function_exists('register_nav_menus')){
 register_nav_menus( array(
@@ -67,8 +83,6 @@ echo '<div id="carousel" class="flexslider"><ul class="slides">';
     ';
 
 }
-
-
 //Za sredjivanje URL-a, pretvara razmak u - i stavlja sva slova u mala
 function url_prepare($word){
     $t = strtr($word," ","-");
@@ -155,19 +169,20 @@ function breadcumb($page_id){
     //Redjamo ih u obrnutom redu,tj od Roditelja pa na dole
     krsort($svi_roditelji);
     //Ispisivanje kroz petlju
-    $bc = '<div id="breadcumb">';
     foreach ($svi_roditelji as $r)
         $bc .=  "<a href='". get_permalink($r) ."'>". get_the_title($r) ."</a> / ";
     //I na kraju title trenutne stranice
-    $bc .= get_the_title($page_id) . "</div>";
-        return $bc; 
+    $bc .= get_the_title($page_id);
     }
+    else {
+        woocommerce_breadcrumb();
+    }
+    return $bc; 
 }
 function add_logo(){
     $cc_logo_option = get_option('cc_theme_logo_options'); ?>
                 <a href="<?php home_url(); ?>"></a> <img src="<?php echo $cc_logo_option['logourl'] ?>" alt="Logo image" /></a>
     <?php
-
 }
 
 function wpbeginner_numeric_posts_nav() {
@@ -494,6 +509,5 @@ function after_footer(){
 <?php
 }
    
-
 
 

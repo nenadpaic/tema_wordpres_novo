@@ -86,7 +86,8 @@ before_header();
 <div class ="content">
     <div class="row" id="sub-nav">
         <div class="second-menu">
-            <ul>
+            <button type="button" id="second-menu-toggle" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> </button>
+            <ul id="collapsable">
                 <?php
                     nav_bar($post->ID);
                 ?>
@@ -99,7 +100,9 @@ before_header();
       slider();
    }   
     else{
-       echo breadcumb($post->ID);
+       echo '<div id="breadcumb">';
+            echo breadcumb($post->ID);
+       echo '</div>';
     }
 ?>
 
@@ -110,7 +113,9 @@ before_header();
     $("#s").attr("size", "30");
     $(".screen-reader-text").html("");
 
-
+    $("#second-menu-toggle").click(function(){
+    $("#collapsable").fadeToggle(1000);
+    });
 
 </script> 
 
