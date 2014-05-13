@@ -81,21 +81,11 @@ before_header();
      ?>
     </div>
 </nav>
-<?php if (!is_front_page()){
-?>
 <div class ="content">
-    <div class="row" id="sub-nav">
-        <div class="second-menu">
-            <button type="button" id="second-menu-toggle" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> </button>
-            <ul id="collapsable">
                 <?php
                     nav_bar($post->ID);
                 ?>
-            </ul>
-        </div>
-    </div>
 <?php
-}
     if ($post->post_parent == 0 && !isset($_GET['s']) && !is_single() && !is_woocommerce()){
       slider();
    }   

@@ -108,7 +108,17 @@ function nav_bar($page_id){
     //Drugi meni, za product
     $menu = Get_All_Wordpress_Menus()[1]->name;
     if (is_woocommerce()){
-        shop_second_menu($menu);
+        ?> <div class="row" id="sub-nav">
+            <div class="second-menu">
+                <button type="button" id="second-menu-toggle" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> </button>
+                <ul id="collapsable">
+                <?php
+                shop_second_menu($menu);
+                ?>
+                </ul>
+            </div>
+        </div>
+    <?php
     }
     else{
         //Nakon toga decu iliti meni koji cemo i ispisati
@@ -129,11 +139,18 @@ function nav_bar($page_id){
             //Sortiramo od manjeg ka vecem i ispisujemo tako
             ksort ($write);
             ?>
-            <?php
-            foreach ($write as $w)
-                $ispis .= $w;
-            echo $ispis;
-            ?>
+            <div class="row" id="sub-nav">
+                <div class="second-menu">
+                    <button type="button" id="second-menu-toggle" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> </button>
+                    <ul id="collapsable">
+                        <?php
+                        foreach ($write as $w)
+                            $ispis .= $w;
+                        echo $ispis;
+                        ?>
+                    </ul>
+                </div>
+            </div>
             <?php
         }
     }
