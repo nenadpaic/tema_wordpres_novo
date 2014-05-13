@@ -73,7 +73,7 @@ function slider(){
     } 
     echo "</ul></div>";
 
-echo '<div id="carousel" class="flexslider"><ul class="slides">';
+echo '<div id="carousel" class="flexslider visible-md visible-lg"><ul class="slides">';
 
      foreach ($slides as $slide) {
         echo "$slide";
